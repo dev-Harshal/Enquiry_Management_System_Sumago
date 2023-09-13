@@ -1,0 +1,82 @@
+{% extends 'enquiry_department/index.html' %}
+{% block title %}Total Enquiry{% endblock title %}
+
+{% block breadcrumb %}
+<div class="d-flex justify-content-between align-items-center">
+  <form class="d-flex me-2" role="search" method="GET" action=" " >
+    <input class="form-control me-2" autocomplete="off" type="search" name="q" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+  </form>
+    <div>
+      <a class="btn btn-primary" href="/enq/{{id}}"><i
+        class="fas fa-plus"></i> Add</a>
+      <a class="btn btn-primary" href="{% url 'enquiry_department:index' %}">Back</a>
+      </div>
+ </div> 
+{% endblock breadcrumb %}
+{% block content %}
+<div class="table-responsive"> 
+<table class="table table-striped" id="enqtable">
+  <thead style="position:sticky;top:10px;">
+    <tr>
+
+      <th>Id</th>
+      <th>Candidate name</th>
+      <th>Area Of Interest</th>
+      <th>Technical skill set</th>
+      <th>Finilezed Internship</th>
+      <th>Follow Up Action</th>
+      <th>Followup List</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+  {% for obj in enquiry_list %}
+    <tr>
+      <td>{{obj.id}}</td>
+      <td >{{obj.full_name}}</td>
+      <td>{{obj.area_of_interest}}</td>
+      <td>{{obj.technical_skills}}</td>
+      <td>{{obj.seleted_course.course_name}}</td>
+      
+      
+        <td>
+          {% if obj.enquiry_Status == 'Pending' %}
+            {% comment %} <a href="{% url 'enquiry_department:enquiry_status_change' obj.id %}"  class="btn btn-danger">Pending</a>  {% endcomment %}
+          {% elif obj.enquiry_Status == 'Finalized' %}
+            {% comment %} <a href="{% url 'enquiry_department:whatappstatus' obj.id %}"  class="btn btn-success">Finalized</a>  {% endcomment %}
+          {% else %}
+          <a href=""  class="btn btn-success">Informed on Whatapp</a> 
+          {% endif %}
+        </td>
+        <td>
+         {% comment %} <a href="{% url 'enquiry_department:follow' obj.id %}" class="btn btn-primary">Continue</a></td> {% endcomment %}
+        {% comment %} <td><a href="{% url 'enquiry_department:follwuplist' obj.id %}" >Click here</a></td> {% endcomment %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+    {% endif %}
+
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+{% endblock %}
+
