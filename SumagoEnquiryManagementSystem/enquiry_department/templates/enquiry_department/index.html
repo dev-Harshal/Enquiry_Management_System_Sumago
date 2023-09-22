@@ -30,6 +30,7 @@
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
   <div class="wrapper">
+    
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
@@ -61,7 +62,7 @@
          
           <a class="nav-link" data-toggle="dropdown" href="#">
             <!-- <img src="{% static 'images/user2.jpg' %}" width="100px" height="100px"> -->
-              <i class="far fa-user"></i> <b> Welcome</b>
+              <i class="far fa-user"></i> <b> Welcome: {{user.first_name | capfirst}} {{user.last_name | capfirst}}</b>
           
           </a>
          
@@ -138,6 +139,14 @@
                           <i class="nav-icon fas fa-users"></i>
                           <p>
                            Enquiry Training website
+                          </p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="" class="nav-link">
+                          <i class="nav-icon fas fa-users"></i>
+                          <p>
+                           <a href="{% url "logout" %}">Logout</a>
                           </p>
                         </a>
                       </li>

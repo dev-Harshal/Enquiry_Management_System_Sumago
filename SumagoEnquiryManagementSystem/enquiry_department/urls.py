@@ -6,6 +6,7 @@ from enquiry_department.views import *
 app_name = 'enquiry_department'
 
 urlpatterns = [
+    #Home
     path('',Index.as_view(),name="index"),
     #Courses
     path('courses_list/',CoursesList.as_view(),name='courses_list'),
@@ -19,3 +20,5 @@ urlpatterns = [
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
                               document_root=settings.MEDIA_ROOT)
+        
+

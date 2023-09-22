@@ -1,7 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
 import datetime
 
 # Create your models here.
+class UserExtraInfo(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    department_choice = (('Enquiry','Enquiry'),('Accounts','Accounts'),('IT','IT'))
+    department = models.CharField(max_length=100,choices=department_choice)
+
+    def __str__(self):
+        return f"Name:{self.user.first_name} {self.user.last_name} Department:{self.department}"
 
 class Course(models.Model):
     course_name=models.CharField(max_length=200)    
@@ -13,8 +21,9 @@ class Course(models.Model):
     
 class Enquiry(models.Model):
     #Personal Info
-    contact_person_choice = (('Dipti Pawar','Dipti Pawar'),('Ashwini Gite','Ashwini Gite'),('Vrushali Varpe','Vrushali Varpe'))
-    contact_person = models.CharField(max_length=50,choices=contact_person_choice,default="Online Platform")
+    # contact_person_choice = (('Dipti Pawar','Dipti Pawar'),('Ashwini Gite','Ashwini Gite'),('Vrushali Varpe','Vrushali Varpe'))
+    # contact_person = models.CharField(max_length=50,choices=contact_person_choice,default="Online Platform")
+    contact_person = models.ForeignKey(User,on_delete=models.RESTRICT)
     seleted_course = models.ForeignKey(Course,on_delete=models.RESTRICT)
     full_name=models.CharField(max_length=250)
     gender_choice = (('Male','Male'),('Female','Female'),('Other','Other'))

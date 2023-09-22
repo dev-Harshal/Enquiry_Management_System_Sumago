@@ -16,8 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.views.generic import RedirectView
+from SumagoEnquiryManagementSystem.views import department_index
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('enquiry_department/',include('enquiry_department.urls'))
+    path('enquiry_department/',include('enquiry_department.urls')),
+    path('accounts/',include('django.contrib.auth.urls')),
+    path('department_index/',department_index,name="department_index"),
+    path('',RedirectView.as_view(url='/accounts/login'))
 ]

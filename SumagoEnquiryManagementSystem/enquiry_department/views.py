@@ -1,17 +1,21 @@
-from django.db import models
-from django.shortcuts import render
+
+from django.shortcuts import render,redirect
 from django.views.generic import TemplateView,CreateView,ListView,UpdateView
 from enquiry_department.models import *
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 
-# Create your views here.
 
-#Home Page
-class Index(TemplateView):
+    
+
+class Index(LoginRequiredMixin,UserPassesTestMixin,TemplateView):
     template_name = 'enquiry_department/index.html'
+    def test_func(self):
+        return self.request.user.groups.filter(name='enquiry').exists()
 
+    
 #Courses
-class AddCourses(CreateView):
+class AddCourses(UserPassesTestMixin,CreateView):
     model = Course
     fields = "__all__"
     success_url = reverse_lazy('enquiry_department:index')
@@ -21,9 +25,16 @@ class AddCourses(CreateView):
         for visible in form.visible_fields():
             visible.field.widget.attrs.update({'class' : 'form-control'})
         return form
+    
+    def test_func(self):
+        return self.request.user.groups.filter(name='enquiry').exists()
+
         
-class CoursesList(ListView):
+class CoursesList(UserPassesTestMixin,ListView):
     model = Course
+    def test_func(self):
+        return self.request.user.groups.filter(name='enquiry').exists()
+
 
 class UpdateCourses(UpdateView):
     model = Course
@@ -34,10 +45,15 @@ class UpdateCourses(UpdateView):
         for visible in form.visible_fields():
             visible.field.widget.attrs.update({'class' : 'form-control'})
         return form
-    
+    def test_func(self):
+        return self.request.user.groups.filter(name='enquiry').exists()
+
+
 #Enquirys
-class EnquiryList(ListView):
+class EnquiryList(UserPassesTestMixin,ListView):
     model = Enquiry
+    def test_func(self):
+        return self.request.user.groups.filter(name='enquiry').exists()
 
 class AddEnquiry(CreateView):
     model = Enquiry
